@@ -17,11 +17,19 @@ bot.on('ready', () => {
 });
 
 //Called whenever a users send a message to the server
-bot.on("message", async message => {
+bot.on('message', async message => {
     //Ignore messages sent by the bot
-    if (message.author.bot) return;
+    if (message.author.bot && !message.content.startsWith(functions.config.prefix + functions.config.prefix)) {
+        return;
+    }
+
     //Ignore messages that dont start with the command symbol
     if (!message.content.includes(functions.config.prefix)) return;
+
+    if (message.author.bot && message.content.startsWith(functions.config.prefix + functions.config.prefix)) {
+        message.content = message.content.substr(1);
+    }
+
     //check to see if bot can send messages on channel
     //check to see if external emoji can be used
     if (message.channel.type !== 'dm') {
@@ -30,7 +38,6 @@ bot.on("message", async message => {
             return;
         }
         if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
-
     }
 
     //Separate and create a list of parameters. A space in the message denotes a new parameter
@@ -40,7 +47,6 @@ bot.on("message", async message => {
             if (param.startsWith(functions.config.prefix)) params = params.slice(index);
         });
     }
-
 
     //stop if there is no command
     if (params.length === 0) return;
@@ -54,10 +60,13 @@ bot.on("message", async message => {
     });
 
     //create command
-    let command = params[0].toLowerCase().toString().slice(1);
+    let command = params[0]
+        .toLowerCase()
+        .toString()
+        .slice(1);
     params = params.slice(1);
     let sides;
-    if (command.startsWith('d') && (command.length > 1) && (command !== 'destiny')) {
+    if (command.startsWith('d') && command.length > 1 && command !== 'destiny') {
         sides = command.replace(/\D/g, '');
         command = 'polyhedral';
         if (!sides) return;
@@ -67,31 +76,35 @@ bot.on("message", async message => {
     let beg, end;
     let desc = [];
     params.forEach((param, index) => {
-        if (param.includes('\"') || param.includes('“') | param.includes('\'')) {
+        if (param.includes('"') || param.includes('“') | param.includes("'")) {
             if (beg === undefined) {
                 beg = index;
                 end = index;
-            }
-            else end = index;
+            } else end = index;
         }
     });
 
     if (beg !== undefined && end !== undefined) {
         desc = params.slice(beg, end + 1);
         params.splice(beg, end + 1 - beg);
-        desc.forEach((word, index) => desc[index] = word.replace('\"', '').replace('\'', '').replace('“', ''));
+        desc.forEach(
+            (word, index) =>
+                (desc[index] = word
+                    .replace('"', '')
+                    .replace("'", '')
+                    .replace('“', ''))
+        );
         desc = desc.join(' ');
     }
 
     //set the rest of params to lowercase
     params = params.filter(Boolean);
-    params.forEach((param, index) => params[index] = param.toLowerCase());
+    params.forEach((param, index) => (params[index] = param.toLowerCase()));
 
     console.log(`@${message.author.username} ${message.createdAt}`);
     console.log(`${command} ${params} ${desc}`);
 
-
-//************************COMMANDS START HERE************************
+    //************************COMMANDS START HERE************************
     let channelEmoji;
     try {
         channelEmoji = await functions.readData(bot, message, 'channelEmoji');

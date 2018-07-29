@@ -1,0 +1,20 @@
+{
+    "firebase": {
+        "apiKey": "",
+        "authDomain": "",
+        "databaseURL": "",
+        "projectId": "",
+        "storageBucket": "",
+        "messagingSenderId": ""
+    },
+    "bot": {
+        "token": "",
+        "adminID": "",
+        "prefix": "!",
+        "maxRollsPerDie": 1000,
+        "descriptorPrepend": "",
+        "dm": "",
+        "swrpg": "",
+        "genesys": ""
+    }
+}

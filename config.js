@@ -1,22 +1,6 @@
-var firebaseconfig = {
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: ""
-};
+var allConfigs = require('./config.secrets.json');
+var firebaseconfig = allConfigs.firebase;
+var config = allConfigs.bot;
 
-var config = {
-    token: "",
-    adminID: "",
-    prefix: "!",
-    maxRollsPerDie: 1000,
-    descriptorPrepend: "",
-    dm: "",
-    swrpg: "",
-    genesys: ""
-}
-
-  exports.config = config;
-  exports.firebaseconfig = firebaseconfig;
+exports.config = config;
+exports.firebaseconfig = firebaseconfig;

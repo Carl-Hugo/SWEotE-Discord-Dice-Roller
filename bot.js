@@ -31,7 +31,6 @@ bot.on('message', async message => {
 
     if (message.author.bot && hasBotCommandPrefix) {
         message.content = message.content.substr(1);
-        message.delete();
         if(message.deletable){
             message.delete();
         }

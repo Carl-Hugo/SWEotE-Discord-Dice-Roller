@@ -18,16 +18,23 @@ bot.on('ready', () => {
 
 //Called whenever a users send a message to the server
 bot.on('message', async message => {
+    const hasBotCommandPrefix = message.content.startsWith(
+        functions.config.prefix + functions.config.prefix
+    );
     //Ignore messages sent by the bot
-    if (message.author.bot && !message.content.startsWith(functions.config.prefix + functions.config.prefix)) {
+    if (message.author.bot && !hasBotCommandPrefix) {
         return;
     }
 
     //Ignore messages that dont start with the command symbol
     if (!message.content.includes(functions.config.prefix)) return;
 
-    if (message.author.bot && message.content.startsWith(functions.config.prefix + functions.config.prefix)) {
+    if (message.author.bot && hasBotCommandPrefix) {
         message.content = message.content.substr(1);
+        message.delete();
+        if(message.deletable){
+            message.delete();
+        }
     }
 
     //check to see if bot can send messages on channel

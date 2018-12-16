@@ -282,10 +282,11 @@ async function countSymbols(diceResult, message, bot, desc, channelEmoji) {
 
 function printResults(diceResult, message, bot, desc, channelEmoji) {
     let response = '';
+    let completeMessage = '';
     //prints faces
     if (diceResult.face !== '') {
         if (diceResult.face.length > 1500) diceResult.face = 'Too many dice to display.';
-        message.channel.send(diceResult.face);
+        //message.channel.send(diceResult.face);
     } else {
         message.reply('No dice rolled.');
         return;
@@ -308,9 +309,9 @@ function printResults(diceResult, message, bot, desc, channelEmoji) {
     if (response === '') response += 'All dice have cancelled out';
     if (diceResult.face !== '') {
         if (message.author.bot) {
-            message.channel.send(desc + '\n\n\t' + response);
+            message.channel.send(desc + '\n\n\t\t' + diceResult.face + '\n\n\t\t' + response);
         } else {
-            message.reply(desc + ' results:' + '\n\n\t' + response);
+            message.reply(desc + ' results:' + '\n\n\t\t' + diceResult.face + '\n\n\t\t' + response);
         }
     }
 }

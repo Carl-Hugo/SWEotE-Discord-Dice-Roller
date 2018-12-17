@@ -109,6 +109,7 @@ function processType(message, params) {
             resolve(0);
         }
 
+        let setbackToRemove = 0;
         let finalOrder = [];
         diceOrder.forEach(die => {
             switch (die) {
@@ -198,10 +199,22 @@ function processType(message, params) {
                 case 'n':
                     finalOrder.push('darkpip');
                     break;
+                case '+':
+                    setbackToRemove++;
+                    break;
                 default:
                     break;
             }
         });
+
+        // Remove one setback dice per setbackToRemove
+        for (let i = 0; i < setbackToRemove; i++) {
+            const nextBlack = finalOrder.indexOf('black');
+            if(nextBlack > -1){
+                delete finalOrder[nextBlack];
+            }
+        }
+
         resolve(finalOrder);
     });
 }

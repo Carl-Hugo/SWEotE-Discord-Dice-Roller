@@ -3,10 +3,10 @@ param (
     [string]$tag = "auto"
 )
 
-if ($tag -eq "auto"){
+if ($tag -eq "auto") {
     $tag = (Get-Content package.json) -join "`n" | ConvertFrom-Json | Select -ExpandProperty "version"
 }
-echo "tag: $tag"
+Write-Output "tag: $tag"
 
 az acr login --name fortheneworder
 
